@@ -1,4 +1,4 @@
-namespace BugStore.Application.UseCases.Reports.RevenueByPeriod;
+namespace BugStore.Application.UseCases.Reports.RevenueByPeriod.Search;
 
 public class Response
 {

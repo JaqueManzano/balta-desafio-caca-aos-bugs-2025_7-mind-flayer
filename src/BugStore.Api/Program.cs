@@ -4,6 +4,8 @@ using BugStore.Application.Services;
 using BugStore.Application.UseCases.Customers.Search;
 using BugStore.Application.UseCases.Orders.Search;
 using BugStore.Application.UseCases.Products.Search;
+using BugStore.Application.UseCases.Reports.BestCustomers.Search;
+using BugStore.Application.UseCases.Reports.RevenueByPeriod.Search;
 using BugStore.Domain.Interfaces;
 using BugStore.Handlers.Customers;
 using BugStore.Infrastructure.Data;
@@ -52,6 +54,10 @@ builder.Services.AddAutoMapper(cfg =>
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCustomerHandler).Assembly));
 
+builder.Services.AddScoped<IReportBestCustomerRepository, ReportBestCustomerRepository>();
+builder.Services.AddScoped<IReportRevenueByPeriodRepository, ReportRevenueByPeriodRepository>();
+builder.Services.AddScoped<ISearchBestCustomersUseCase, SearchBestCustomersUseCase>();
+builder.Services.AddScoped<ISearchRevenueByPeriodUseCase, SearchRevenueByPeriodUseCase>();
 builder.Services.AddScoped<ISearchCustomersUseCase, SearchCustomersUseCase>();
 builder.Services.AddScoped<ISearchProductsUseCase, SearchProductsUseCase>();
 builder.Services.AddScoped<ISearchOrdersUseCase, SearchOrdersUseCase>();
@@ -76,6 +82,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
+}
 
 app.UseCors("AllowAll");
 

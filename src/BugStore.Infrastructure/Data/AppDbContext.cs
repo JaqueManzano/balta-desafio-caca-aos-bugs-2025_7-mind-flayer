@@ -1,4 +1,5 @@
 ﻿using BugStore.Domain.Entities;
+using BugStore.Domain.Models.Reports;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Npgsql;
@@ -16,6 +17,19 @@ namespace BugStore.Infrastructure.Data
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<OrderLine> OrderLines { get; set; } = null!;
+        public DbSet<BestCustomers> BestCustomers { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder
+                .Entity<BestCustomers>(eb =>
+                {
+                    eb.HasNoKey();
+                    eb.ToView("vw_report_best_customers");
+                });
+        }
     }
 
     public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
@@ -54,5 +68,6 @@ namespace BugStore.Infrastructure.Data
 
             return new AppDbContext(optionsBuilder.Options);
         }
+   
     }
 }
