@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BugStore.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251030233632_InitialCreate")]
+    [Migration("20251031005002_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -119,6 +119,47 @@ namespace BugStore.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("BugStore.Domain.Models.Reports.BestCustomers", b =>
+                {
+                    b.Property<string>("CustomerEmail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("SpentAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TotalOrders")
+                        .HasColumnType("INTEGER");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("vw_report_best_customers", (string)null);
+                });
+
+            modelBuilder.Entity("BugStore.Domain.Models.Reports.RevenueByPeriodResult", b =>
+                {
+                    b.Property<string>("Month")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TotalOrders")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("TotalRevenue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("INTEGER");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("vw_report_revenue_by_period", (string)null);
                 });
 
             modelBuilder.Entity("BugStore.Domain.Entities.Order", b =>

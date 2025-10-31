@@ -66,6 +66,23 @@ namespace BugStore.Infrastructure.Migrations
                 INNER JOIN OrderLines ol ON o.Id = ol.OrderId
                 GROUP BY c.Id, c.Name, c.Email;
             ");
+
+            migrationBuilder.Sql(@"
+            CREATE VIEW IF NOT EXISTS vw_report_revenue_by_period AS
+            SELECT
+                strftime('%Y', o.CreatedAt) AS Year,
+                strftime('%m', o.CreatedAt) AS Month,
+                COUNT(o.Id) AS TotalOrders,
+                SUM(ol.Total) AS TotalRevenue
+            FROM Orders o
+            INNER JOIN OrderLines ol
+                ON o.Id = ol.OrderId
+            GROUP BY
+                strftime('%Y', o.CreatedAt),
+                strftime('%m', o.CreatedAt)
+            ORDER BY
+                Year, Month;
+            ");
         }
 
         /// <inheritdoc />

@@ -7,21 +7,15 @@ namespace BugStore.Application.UseCases.Reports.RevenueByPeriod.Search
     {
         private readonly IReportRevenueByPeriodRepository _reportRevenueByPeriod;
 
-        public async Task<IEnumerable<Response>> ExecuteAsync(Request request, CancellationToken cancellationToken)
+        public SearchRevenueByPeriodUseCase(IReportRevenueByPeriodRepository reportRevenueByPeriod)
+        {
+            _reportRevenueByPeriod = reportRevenueByPeriod;
+        }
+
+        public async Task<IEnumerable<Response>> ExecuteAsync(CancellationToken cancellationToken)
         {
 
-            var reportData = await _reportRevenueByPeriod.SearchAsync(
-                request.CustomerName,
-                request.CustomerEmail,
-                request.ProductTitle,
-                request.ProductPriceStart,
-                request.ProductPriceEnd,
-                request.CreatedAtStart,
-                request.CreatedAtEnd,
-                request.UpdatedAtStart,
-                request.UpdatedAtEnd,
-                cancellationToken
-            );
+            var reportData = await _reportRevenueByPeriod.SearchAsync(cancellationToken);
 
             return reportData.Select(r => new Response
             {

@@ -14,10 +14,10 @@ namespace BugStore.Api.Controllers
             _searchRevenueByPeriodUseCase = searchRevenueByPeriodUseCase;
         }
 
-        [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] Request request, CancellationToken cancellationToken)
+        [HttpGet("RevenueByPeriod")]
+        public async Task<IActionResult> Search(CancellationToken cancellationToken)
         {
-            var result = await _searchRevenueByPeriodUseCase.ExecuteAsync(request, cancellationToken);
+            var result = await _searchRevenueByPeriodUseCase.ExecuteAsync(cancellationToken);
             return Ok(result);
         }
     }

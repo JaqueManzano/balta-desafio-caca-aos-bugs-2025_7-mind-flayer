@@ -16,13 +16,9 @@ namespace BugStore.Infrastructure.Repositories
 
         public async Task<List<BestCustomers>> SearchAsync(CancellationToken cancellationToken)
         {
-            var sql = _context.Database.IsSqlite()
-            ? "SELECT * FROM vw_report_best_customers"
-            : "SELECT * FROM sp_report_best_customers()";
-
             var data = await _context
                 .Set<BestCustomers>()
-                .FromSqlRaw(sql)
+                .FromSqlRaw("SELECT * FROM vw_report_best_customers")
                 .ToListAsync(cancellationToken);
 
             return data;

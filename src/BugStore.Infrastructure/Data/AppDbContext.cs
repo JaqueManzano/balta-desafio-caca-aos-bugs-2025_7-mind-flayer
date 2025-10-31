@@ -29,6 +29,13 @@ namespace BugStore.Infrastructure.Data
                     eb.HasNoKey();
                     eb.ToView("vw_report_best_customers");
                 });
+
+            modelBuilder
+               .Entity<RevenueByPeriodResult>(eb =>
+               {
+                   eb.HasNoKey();
+                   eb.ToView("vw_report_revenue_by_period");
+               });
         }
     }
 

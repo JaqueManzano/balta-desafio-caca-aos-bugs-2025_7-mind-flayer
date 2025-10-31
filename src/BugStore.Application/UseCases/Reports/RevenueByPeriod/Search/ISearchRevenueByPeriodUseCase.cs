@@ -2,6 +2,6 @@
 {
     public interface ISearchRevenueByPeriodUseCase
     {
-        Task<IEnumerable<Response>> ExecuteAsync(Request request, CancellationToken cancellationToken);
+        Task<IEnumerable<Response>> ExecuteAsync(CancellationToken cancellationToken);
     }
 }
