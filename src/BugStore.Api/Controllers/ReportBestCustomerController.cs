@@ -15,9 +15,9 @@ namespace BugStore.Api.Controllers
         }
 
         [HttpGet("BestCustomer")]
-        public async Task<IActionResult> Search([FromQuery] Request request, CancellationToken cancellationToken)
+        public async Task<IActionResult> Search(CancellationToken cancellationToken)
         {
-            var result = await _searchBestCustomersUseCase.ExecuteAsync(request, cancellationToken);
+            var result = await _searchBestCustomersUseCase.ExecuteAsync(cancellationToken);
             return Ok(result);
         }
     }

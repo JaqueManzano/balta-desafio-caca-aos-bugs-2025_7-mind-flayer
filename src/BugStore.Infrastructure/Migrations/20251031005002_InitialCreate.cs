@@ -55,32 +55,33 @@ namespace BugStore.Infrastructure.Migrations
 
             // View do report
             migrationBuilder.Sql(@"
-                CREATE VIEW IF NOT EXISTS vw_report_best_customers AS
+               CREATE VIEW IF NOT EXISTS vw_report_best_customers AS
                 SELECT 
                     c.Name AS CustomerName,
                     c.Email AS CustomerEmail,
                     COUNT(o.Id) AS TotalOrders,
-                    SUM(ol.Total) AS SpentAmount
+                    SUM(CAST(REPLACE(ol.Total, '.', '') AS REAL)) AS SpentAmount
                 FROM Customers c
                 INNER JOIN Orders o ON c.Id = o.CustomerId
                 INNER JOIN OrderLines ol ON o.Id = ol.OrderId
-                GROUP BY c.Id, c.Name, c.Email;
+                GROUP BY c.Id, c.Name, c.Email
+                ORDER BY SpentAmoOrdersunt DESC;
             ");
 
             migrationBuilder.Sql(@"
             CREATE VIEW IF NOT EXISTS vw_report_revenue_by_period AS
             SELECT
-                strftime('%Y', o.CreatedAt) AS Year,
-                strftime('%m', o.CreatedAt) AS Month,
-                COUNT(o.Id) AS TotalOrders,
-                SUM(ol.Total) AS TotalRevenue
-            FROM Orders o
-            INNER JOIN OrderLines ol
-                ON o.Id = ol.OrderId
-            GROUP BY
-                strftime('%Y', o.CreatedAt),
-                strftime('%m', o.CreatedAt)
-            ORDER BY
+                 strftime('%Y', o.CreatedAt) AS Year,
+                 strftime('%m', o.CreatedAt) AS Month,
+                 COUNT(o.Id) AS TotalOrders,
+                 SUM(CAST(REPLACE(ol.Total, '.', '') AS REAL)) AS TotalRevenue
+             FROM Orders o
+             INNER JOIN OrderLines ol
+                 ON o.Id = ol.OrderId
+             GROUP BY
+                 strftime('%Y', o.CreatedAt),
+                 strftime('%m', o.CreatedAt)
+             ORDER BY
                 Year, Month;
             ");
         }

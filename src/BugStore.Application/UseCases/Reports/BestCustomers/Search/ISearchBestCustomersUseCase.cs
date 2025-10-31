@@ -4,6 +4,6 @@ namespace BugStore.Application.UseCases.Reports.BestCustomers.Search
 {
     public interface ISearchBestCustomersUseCase
     {
-        Task<IEnumerable<Response>> ExecuteAsync(Request request, CancellationToken cancellationToken);
+        Task<IEnumerable<Response>> ExecuteAsync(CancellationToken cancellationToken);
     }
 }

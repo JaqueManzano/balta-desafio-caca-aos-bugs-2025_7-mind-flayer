@@ -1,5 +1,6 @@
 ﻿using BugStore.Application.UseCases.Reports.BestCustomers.SearchCustomer;
 using BugStore.Domain.Interfaces;
+using System.Globalization;
 
 namespace BugStore.Application.UseCases.Reports.BestCustomers.Search
 {
@@ -12,7 +13,7 @@ namespace BugStore.Application.UseCases.Reports.BestCustomers.Search
             _reportCustomerRepository = reportCustomerRepository;
         }
 
-        public async Task<IEnumerable<Response>> ExecuteAsync(Request request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Response>> ExecuteAsync(CancellationToken cancellationToken)
         {
             var reportData = await _reportCustomerRepository.SearchAsync(cancellationToken);
 
@@ -21,7 +22,7 @@ namespace BugStore.Application.UseCases.Reports.BestCustomers.Search
                 CustomerName = r.CustomerName,
                 CustomerEmail = r.CustomerEmail,
                 TotalOrders = r.TotalOrders,
-                SpentAmount = r.SpentAmount
+                SpentAmount = r.SpentAmount.ToString("C", new CultureInfo("pt-BR"))
             });
         }
     }
